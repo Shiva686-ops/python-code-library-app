@@ -4,18 +4,18 @@ services:
     image: sivavaddi2026/db:v1
     ports:
       - "3306:3306"
-    enivironment:
+    environment:
       MYSQL_ROOT_PASSWORD: root
     deploy:
-      replicas: 2
+      replicas: 1
       resources:
-        reservtions:
+        reservations:
           cpus: "0.5"
           memory: 100M
         limits:
           cpus: "1.0"
           memory: 200M
-     networks:
+    networks:
       - mynetwork
 
   frontend:
@@ -25,15 +25,15 @@ services:
     deploy:
       replicas: 2
       resources:
-        reservtions:
+        reservations:
           cpus: "0.5"
           memory: 100M
         limits:
           cpus: "1.0"
           memory: 200M
-     networks:
+    networks:
       - mynetwork
-     depends_on:
+    depends_on:
        - auth_service
        - book_service
        - borrow_service
@@ -46,16 +46,16 @@ services:
     deploy:
       replicas: 2
       resources:
-        reservtions:
+        reservations:
           cpus: "0.5"
           memory: 100M
         limits:
           cpus: "1.0"
           memory: 200M
-     networks:
+    networks:
       - mynetwork
-     depends_on:
-       - db
+    depends_on:
+      - db
 
 
   book_service:
@@ -65,16 +65,16 @@ services:
     deploy:
       replicas: 2
       resources:
-        reservtions:
+        reservations:
           cpus: "0.5"
           memory: 100M
         limits:
           cpus: "1.0"
           memory: 200M
-     networks:
+    networks:
       - mynetwork
-     depends_on:
-       - db
+    depends_on:
+      - db
 
 
   borrow_service:
@@ -84,16 +84,16 @@ services:
     deploy:
       replicas: 2
       resources:
-        reservtions:
+        reservations:
           cpus: "0.5"
           memory: 100M
         limits:
           cpus: "1.0"
           memory: 200M
-     networks:
+    networks:
       - mynetwork
-     depends_on:
-       - db
+    depends_on:
+      - db
 
 
 networks:
