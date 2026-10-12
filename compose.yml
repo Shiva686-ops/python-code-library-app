@@ -1,53 +1,36 @@
 ---
 services:
   db:
-    image: shaikmustafa/arshad:db
-    deploy:
-      replicas: 1
+    image: sivavaddi2026/db:v1
     ports:
       - "3306:3306"
-    networks:
-      - mynetwork
-
-  auth_service:
-    image: shaikmustafa/arshad:auth
+    enivironment:
+      MYSQL_ROOT_PASSWORD: root
+    resources:
+      reservtions:
+        cpus: "0.5"
+        memory: 100M
+      limits:
+        cpus: "1.0"
+        memory: 200M
     deploy:
-      replicas: 1
-    ports:
-      - "5001:5001"
+      replicas: 2
     networks:
       - mynetwork
-    depends_on:
-      - db
-    
-
-  book_service:
-    image: shaikmustafa/arshad:book
-    deploy:
-      replicas: 1
-    ports:
-      - "5002:5002"
-    networks:
-      - mynetwork
-    depends_on:
-      - db
-  borrow_service:
-    image: shaikmustafa/arshad:borrow
-    deploy:
-      replicas: 1
-    ports:
-      - "5003:5003"
-    networks:
-      - mynetwork
-    depends_on:
-      - db
 
   frontend:
-    image: shaikmustafa/arshad:frontend
-    deploy:
-      replicas: 1
+    image: sivavaddi2026/frontend:v1
     ports:
-      - "5000:5000"
+      - "1111:5000"
+    resources:
+      reservtions:
+        cpus: "0.5"
+        memory: 100M
+      limits:
+        cpus: "1.0"
+        memory: 200M
+    deploy:
+      replicas: 2
     networks:
       - mynetwork
     depends_on:
@@ -55,6 +38,64 @@ services:
       - book_service
       - borrow_service
 
+
+  auth_service:
+    image: sivavaddi2026/auth:v1
+    ports:
+      - "1112:5001"
+    resources:
+      reservtions:
+        cpus: "0.5"
+        memory: 100M
+      limits:
+        cpus: "1.0"
+        memory: 200M
+    deploy:
+      replicas: 2
+    networks:
+      - mynetwork
+    depends_on:
+      - db
+
+
+  book_service:
+    image: sivavaddi2026/book:v1
+    ports:
+      - "1113:5002"
+    resources:
+      reservtions:
+        cpus: "0.5"
+        memory: 100M
+      limits:
+        cpus: "1.0"
+        memory: 200M
+    deploy:
+      replicas: 2
+    networks:
+      - mynetwork
+    depends_on:
+      - db
+
+
+  borrow_service:
+    image: sivavaddi2026/borrow:v1
+    ports:
+      - "1114:5003"
+    resources:
+      reservtions:
+        cpus: "0.5"
+        memory: 100M
+      limits:
+        cpus: "1.0"
+        memory: 200M
+    deploy:
+      replicas: 2
+    networks:
+      - mynetwork
+    depends_on:
+      - db
+
+
 networks:
   mynetwork:
-    driver: bridge
+    driver: overlay
